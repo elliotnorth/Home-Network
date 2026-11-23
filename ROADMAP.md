@@ -12,11 +12,27 @@
 
 | role | device |
 |---|---|
-| firewall | OptiPlex 7050 SFF + Intel I350-T4 running OPNsense |
-| switch | Cisco SG300-10P |
-| wifi | UniFi U6 Lite |
+| firewall | OptiPlex 7050 SFF running OPNsense |
+| firewall nic | [NICGIGA 4-port I350](https://www.amazon.com/dp/B0FJ1V81KL) |
+| switch | [MikroTik CRS112-8G-4S-IN](https://www.ebay.com/itm/136979351292) |
+| switch psu | [MikroTik 24V 1.2A](https://www.amazon.com/dp/B0C2V64ZQ8) |
+| switch + pi mount | [MikroTik RMK-2/10](https://www.amazon.com/dp/B0C6D3ZCDK) |
+| poe | [Ubiquiti U-POE-AF](https://www.ebay.com/itm/178049257592) for the AP |
+| wifi | [UniFi nanoHD](https://www.ebay.com/itm/168827212585) |
 | watchdog | Raspberry Pi |
-| rack | 15U 19" |
+| rack | [Tecmojo 12U open frame](https://www.amazon.com/dp/B0CSJR2RZB) |
+| patch panel | [Jadaol 24-port Cat6](https://www.amazon.com/dp/B0DQTG6BBK) |
+| pdu | [HHSOET 1U with display](https://www.amazon.com/dp/B0GWCD6H2W) |
+
+### still need
+
+- [x] UniFi nanoHD
+- [x] microSD for the Pi: [SanDisk High Endurance](https://www.amazon.com/dp/B07P14QHB7)
+- [x] rack
+- [ ] short patch cables, color per vlan
+- [x] patch panel
+- [x] 1U PDU
+- [ ] long cable to the AP
 
 ## vlans
 
@@ -53,14 +69,12 @@ Skips Mullvad: consoles, Steam, game servers, streaming, host updates, DDNS.
 
 ```
 ┌──────────────────────────┐
-│ 1     patch panel        │
-│ 2     switch             │
-│ 3     cable mgmt         │
-│ 4-5   raspberry pi       │
-│ 6-8   opnsense           │
-│ 9-13  proxmox            │
-│ 14    blank              │
-│ 15    pdu                │
+│ 12    patch panel        │
+│ 11    switch + pi        │
+│ 10    pdu                │
+│ 6-9   opnsense (shelf)   │
+│ 5     air gap            │
+│ 1-4   proxmox (floor)    │
 └──────────────────────────┘
 ```
 
