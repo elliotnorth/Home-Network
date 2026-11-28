@@ -2,9 +2,11 @@
 
 ## todo
 
-- [ ] DHCP hands out the home resolver
+- [x] DHCP hands out the home resolver
+- [x] desktop on the WireGuard full tunnel instead of the Mullvad app
+- [x] secure DNS with daily list updates
 - [ ] clean up old datasets, backups, test VM, snapshots
-- [ ] remove Tailscale
+- [ ] uninstall leftover Tailscale packages (off everywhere already)
 - [ ] ntfy alerts for backups, SMART, pool health
 - [ ] test restores on a schedule
 
@@ -55,9 +57,9 @@ Skips Mullvad: consoles, Steam, game servers, streaming, host updates, DDNS.
 
 ## dns
 
-- redirect all outbound 53 to the local resolver
+- redirect all outbound 53 to the local resolver (done for WireGuard clients)
 - block DoH for `iot` and `guest`
-- maybe Mullvad blocklists
+- list sets per vlan, strict set for `trusted`
 
 ## monitoring
 

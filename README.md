@@ -33,9 +33,9 @@
 | `vaultwarden` | Vaultwarden | Alpine |
 | `ente` | Ente Photos | Debian + Docker |
 | `nextcloud` | Nextcloud | Alpine |
-| `tarn` | [Tarn](https://github.com/elliotnorth/Tarn): reverse proxy, internal DNS, wildcard cert | Debian |
+| `tarn` | [Tarn](https://github.com/elliotnorth/tarn): reverse proxy, internal DNS, wildcard cert | Debian |
 | `hermes` | Hermes Agent | Debian |
-| `wireguard` | WireGuard, dnsmasq, stubby, Mullvad exit | Debian |
+| `wireguard` | WireGuard hub, dnsmasq, Mullvad exit | Debian |
 | `beammp` | BeamMP | Debian |
 | `terraria` | Terraria | Debian |
 
@@ -49,7 +49,7 @@ All unprivileged LXC.
 | tcp | `terraria` | IP allowlist |
 | tcp/udp | `beammp` | forward on only while playing |
 
-Nothing else. Web apps are LAN/WireGuard only through Tarn.
+Nothing else. Web apps are LAN/WireGuard only through Tarn. No Cloudflare tunnels.
 
 ## hardening
 
@@ -58,7 +58,7 @@ Nothing else. Web apps are LAN/WireGuard only through Tarn.
 
 - admin account renamed, HTTPS on a non-default port
 - admin UI locked to one host
-- remote management, UPnP, VPN passthrough, DMZ off
+- remote management, cloud management, UPnP, VPN passthrough, DMZ off
 </details>
 
 <details>
@@ -79,24 +79,34 @@ Nothing else. Web apps are LAN/WireGuard only through Tarn.
 - unattended-upgrades on Debian
 </details>
 
+<details>
+<summary><b>devices</b></summary>
+
+- desktop: daily account is a standard user, separate admin account
+- desktop: BitLocker on every drive, browser settings locked by policy
+- desktop: SSH keys only, from the admin container only
+- laptop: DNS only works through the tunnel
+</details>
+
 ## privacy
 
 ```
-phone / laptop ──wg──> home ──wg──> mullvad ──> internet
-                        │
-                        └── dns: dnsmasq ─> stubby ─> mullvad DoT
+desktop / laptop / phone ──wg──> home ──wg──> mullvad ──> internet
+                                  │
+                                  └── dns: dnsmasq ─> mullvad, inside the tunnel
 ```
 
-- phone + laptop are full tunnel, kill switch via blackhole route, laptop connects at boot
-- desktop runs the Mullvad app
-- Cloudflare is DNS only, no proxy. DDNS with a scoped token
+- desktop, laptop and phone are full tunnel, kill switch, connect at boot
+- LAN and servers use the home resolver too, so nothing goes out as plain DNS
+- secure DNS: blocklists updated daily, safe search, DoH/VPN/proxy bypass blocked for my devices
+- Cloudflare is DNS only for anything at home. DDNS with a scoped token
 
 ## backups
 
 | # | where |
 |---|---|
 | 1 | raidz1 |
-| 2 | nightly `vzdump` to the backup pool |
+| 2 | nightly `vzdump` to the backup pool, weekly to the raidz1 pool |
 | 3 | encrypted offsite drive, synced monthly |
 
 Games aren't backed up.
